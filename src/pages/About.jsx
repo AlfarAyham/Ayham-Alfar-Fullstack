@@ -1,15 +1,25 @@
+import { useEffect } from "react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { useTheme } from "../context/ThemeContext";
 import profilePic from "../assets/profile.jpg";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 function About() {
   const { isDark } = useTheme();
+
+  useEffect(() => {
+    AOS.init({ duration: 800, once: false });
+    AOS.refresh();
+  }, [isDark]);
 
   const backgroundColor = isDark ? "bg-gray-900" : "bg-white";
   const cardBg = isDark ? "bg-white/10" : "bg-white";
   const textColor = isDark ? "text-gray-200" : "text-indigo-800";
   const headingColor = isDark ? "text-white" : "text-indigo-800";
-  const iconColor = isDark ? "text-gray-200 hover:text-white" : "text-indigo-800 hover:text-indigo-600";
+  const iconColor = isDark
+    ? "text-gray-200 hover:text-white"
+    : "text-indigo-800 hover:text-indigo-600";
   const borderColor = isDark ? "border-white" : "border-gray-300";
 
   return (
@@ -31,21 +41,40 @@ function About() {
 
         {/* Text content */}
         <div className="text-center md:text-left" data-aos="fade-up" data-aos-delay="10">
-          <h1 className={`text-4xl md:text-5xl font-extrabold mb-4 ${headingColor} drop-shadow-lg`}>
+          <h1
+            className={`text-4xl md:text-5xl font-extrabold mb-4 ${headingColor} drop-shadow-lg`}
+          >
             About Me
           </h1>
 
-          <p className={`text-lg mb-3 leading-relaxed ${textColor}`} data-aos="fade-up" data-aos-delay="400">
+          <p
+            className={`text-lg mb-3 leading-relaxed ${textColor}`}
+            data-aos="fade-up"
+            data-aos-delay="400"
+          >
             I'm a recent graduate in <strong>Computer Engineering</strong> with strong skills in
             full-stack development, Front End and automation...
           </p>
-          <p className={`text-lg mb-3 leading-relaxed ${textColor}`} data-aos="fade-up" data-aos-delay="500">
+          <p
+            className={`text-lg mb-3 leading-relaxed ${textColor}`}
+            data-aos="fade-up"
+            data-aos-delay="500"
+          >
             My graduation project focused on <strong>Booking Web</strong>...
           </p>
-          <p className={`text-lg mb-3 leading-relaxed ${textColor}`} data-aos="fade-up" data-aos-delay="600">
-            I develop full-stack projects using <strong>React, Tailwind, Node.js, and PostgreSQL</strong>...
+          <p
+            className={`text-lg mb-3 leading-relaxed ${textColor}`}
+            data-aos="fade-up"
+            data-aos-delay="600"
+          >
+            I develop full-stack projects using{" "}
+            <strong>React, Tailwind, Node.js, and PostgreSQL</strong>...
           </p>
-          <p className={`text-lg leading-relaxed ${textColor}`} data-aos="fade-up" data-aos-delay="700">
+          <p
+            className={`text-lg leading-relaxed ${textColor}`}
+            data-aos="fade-up"
+            data-aos-delay="700"
+          >
             Outside of coding, I enjoy experimenting with tech, reading documentation...
           </p>
 
