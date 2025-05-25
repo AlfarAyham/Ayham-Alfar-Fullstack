@@ -38,6 +38,12 @@ function Projects() {
     AOS.init({ duration: 800, once: false });
   }, []);
 
+  useEffect(() => {
+  AOS.init({ duration: 800, once: false });
+  AOS.refresh(); // Important to re-calculate positions
+}, [isDark]);
+
+
   // Colors based on theme
   const containerBg = isDark ? "bg-gray-900" : "bg-white";
   const cardBg = isDark ? "bg-gray-800/70" : "bg-white/20";

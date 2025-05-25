@@ -1,7 +1,19 @@
+import { useEffect } from "react";
+import { useTheme } from "../context/ThemeContext";
 import { motion } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 
 function Home() {
+  const { isDark } = useTheme();
+
+  useEffect(() => {
+    AOS.init({ duration: 800, once: false });
+    AOS.refresh();
+  }, [isDark]);
+
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-white dark:bg-gray-900 transition-colors duration-300 overflow-hidden">
       <motion.div
@@ -42,8 +54,8 @@ function Home() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.6 }}
         >
-          I blend code and creativity to build modern, responsive web experiences that don’t just work — they vibe
-          
+          I blend code and creativity to build modern, responsive web experiences that
+          don’t just work — they vibe.
         </motion.p>
 
         <motion.div
@@ -52,6 +64,7 @@ function Home() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.6 }}
         >
+          
           {/* <a
             href="#about"
             className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-6 rounded-full shadow-lg transition duration-300"
