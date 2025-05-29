@@ -1,58 +1,102 @@
-import { useState } from "react";
-import { Link, useLocation } from 'react-router-dom';
+import { useEffect, useState } from "react";
 import { useTheme } from "../context/ThemeContext";
 import { FaSun, FaMoon } from "react-icons/fa";
 
-function Navbar() {
+function Navbar({ refs }) {
   const [isOpen, setIsOpen] = useState(false);
   const { isDark, setIsDark } = useTheme();
-  const location = useLocation();
+  const [activeSection, setActiveSection] = useState("home");
 
   const toggleTheme = () => setIsDark(!isDark);
 
-  const navLinkStyle = (path) =>
-    location.pathname === path
-      ? "bg-indigo-700 text-white"
-      : "text-gray-300 hover:bg-indigo-500 hover:text-white";
+  const scrollTo = (ref, section) => {
+    setIsOpen(false);
+    ref.current?.scrollIntoView({ behavior: "smooth" });
+    setActiveSection(section); // Update manually on click
+  };
+
+  useEffect(() => {
+    const observerOptions = {
+      root: null,
+      rootMargin: "0px",
+      threshold: 0.6,
+    };
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    }, observerOptions);
+
+    const sections = [
+      refs.homeRef,
+      refs.aboutRef,
+      refs.projectsRef,
+      refs.technologiesRef,
+      refs.contactRef,
+    ];
+
+    sections.forEach((ref) => {
+      if (ref.current) sectionObserver.observe(ref.current);
+    });
+
+    return () => {
+      sections.forEach((ref) => {
+        if (ref.current) sectionObserver.unobserve(ref.current);
+      });
+    };
+  }, [refs]);
+
+  const linkStyle = (section) =>
+    `cursor-pointer rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+      isDark
+        ? section === activeSection
+          ? "text-yellow-300"
+          : "text-white hover:bg-gray-700"
+        : section === activeSection
+          ? "text-indigo-700 font-bold"
+          : "text-gray-700 hover:bg-indigo-500 hover:text-white"
+    }`;
 
   return (
-    <nav className={`sticky top-0 z-50 w-full ${isDark ? "bg-gray-900" : "bg-white shadow-md"}`}>      
+    <nav className={`sticky top-0 z-50 w-full ${isDark ? "bg-gray-900" : "bg-white shadow-md"}`}>
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
           {/* Mobile menu button */}
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              type="button"
-              className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-indigo-500 hover:text-white focus:outline-none"
-              aria-controls="mobile-menu"
-              aria-expanded={isOpen}
+              className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-indigo-500 hover:text-white"
             >
               <span className="sr-only">Open main menu</span>
               {isOpen ? (
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               ) : (
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               )}
             </button>
           </div>
 
-          {/* Logo and links */}
+          {/* Logo and desktop nav */}
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex flex-shrink-0 items-center">
               <span className={`text-xl font-bold ${isDark ? "text-white" : "text-indigo-800"}`}>AYHAM</span>
             </div>
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
-                <Link to="/" className={`${navLinkStyle("/" )} rounded-md px-3 py-2 text-sm font-medium`}>Home</Link>
-                <Link to="/about" className={`${navLinkStyle("/about")} rounded-md px-3 py-2 text-sm font-medium`}>About</Link>
-                <Link to="/projects" className={`${navLinkStyle("/projects")} rounded-md px-3 py-2 text-sm font-medium`}>Projects</Link>
-                <Link to="/contact" className={`${navLinkStyle("/contact")} rounded-md px-3 py-2 text-sm font-medium`}>Contact</Link>
-              </div>
+  <button onClick={() => scrollTo(refs.homeRef, "home")} className={`${linkStyle("home")} text-indigo-800 dark:text-white`}>Home</button>
+  <button onClick={() => scrollTo(refs.aboutRef, "about")} className={`${linkStyle("about")} text-indigo-800 dark:text-white`}>About</button>
+    <button onClick={() => scrollTo(refs.technologiesRef, "technologies")} className={`${linkStyle("technologies")} text-indigo-800 dark:text-white`}>Technologies</button>
+  <button onClick={() => scrollTo(refs.projectsRef, "projects")} className={`${linkStyle("projects")} text-indigo-800 dark:text-white`}>Projects</button>
+  <button onClick={() => scrollTo(refs.contactRef, "contact")} className={`${linkStyle("contact")} text-indigo-800 dark:text-white`}>Contact</button>
+</div>
+
             </div>
           </div>
 
@@ -73,10 +117,11 @@ function Navbar() {
       {isOpen && (
         <div className="sm:hidden" id="mobile-menu">
           <div className="space-y-1 px-2 pt-2 pb-3">
-            <Link to="/" className={`${navLinkStyle("/" )} block rounded-md px-3 py-2 text-base font-medium`}>Home</Link>
-            <Link to="/about" className={`${navLinkStyle("/about")} block rounded-md px-3 py-2 text-base font-medium`}>About</Link>
-            <Link to="/projects" className={`${navLinkStyle("/projects")} block rounded-md px-3 py-2 text-base font-medium`}>Projects</Link>
-            <Link to="/contact" className={`${navLinkStyle("/contact")} block rounded-md px-3 py-2 text-base font-medium`}>Contact</Link>
+            <button onClick={() => scrollTo(refs.homeRef, "home")} className={`${linkStyle("home")} block w-full text-left`}>Home</button>
+            <button onClick={() => scrollTo(refs.aboutRef, "about")} className={`${linkStyle("about")} block w-full text-left`}>About</button>
+                        <button onClick={() => scrollTo(refs.technologiesRef, "technologies")} className={`${linkStyle("technologies")} block w-full text-left`}>Technologies</button>
+            <button onClick={() => scrollTo(refs.projectsRef, "projects")} className={`${linkStyle("projects")} block w-full text-left`}>Projects</button>
+            <button onClick={() => scrollTo(refs.contactRef, "contact")} className={`${linkStyle("contact")} block w-full text-left`}>Contact</button>
           </div>
         </div>
       )}
