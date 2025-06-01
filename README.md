@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Ayham Alfar – Developer Portfolio
 
 Welcome to my personal portfolio website! This project showcases my skills, experience, and projects as a full-stack developer. Built with modern web technologies, it’s designed to be fast, responsive, and interactive.
@@ -51,3 +52,9 @@ Google – for teaching us SEO pain with a smile 😅
 
 📧 Email: ayhamraedalfar41@gmail.com
 
+=======
+<<<<<<< HEAD
+"# Ayham-Alfar-Fullstack" 
+=======
+# React + Vite
+>>>>>>> c1754c6cd1ef6d419581458fef3786fe3346b5fa
