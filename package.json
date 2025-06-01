@@ -32,6 +32,6 @@
     "vite": "^6.3.5"
   },
   "description": "Minimal React + Vite + Tailwind setup with ESLint",
-  "author": "",
+  "author": "Ayham Raed Alfar",
   "license": "ISC"
 }
